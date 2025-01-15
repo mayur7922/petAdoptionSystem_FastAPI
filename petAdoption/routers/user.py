@@ -26,9 +26,13 @@ Depends(oauth2.get_current_user)):
 @router.post('/pets/adopt',tags=['Users'])
 def all(request: schemas.Adopt, db: Session = Depends(get_db), current_user: schemas.User = 
 Depends(oauth2.get_current_user)):
+    if current_user.role == 'admin':
+        raise HTTPException(status_code=404, detail="Access denied")
     return user.adopt(request,db,current_user)
 
 @router.post('/pets/return',tags=['Users'])
 def all(request: schemas.Return, db: Session = Depends(get_db), current_user: schemas.User = 
 Depends(oauth2.get_current_user)):
+    if current_user.role == 'admin':
+        raise HTTPException(status_code=404, detail="Access denied")
     return user.Return(request,db,current_user)
